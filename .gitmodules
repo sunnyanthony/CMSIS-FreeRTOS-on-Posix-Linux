@@ -1,0 +1,3 @@
+[submodule "CMSIS-FreeRTOS"]
+	path = CMSIS-FreeRTOS
+	url = https://github.com/ARM-software/CMSIS-FreeRTOS.git
