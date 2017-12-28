@@ -21,9 +21,9 @@ noinst_HEADERS =
 
 AM_CPPFLAGS += \
 			   -I$(top_srcdir)/posix_simulator/AsyncIO \
-			   -I$(KERNEL_DIR)/Common_Demo/include/ \
+			   -Iproject/$(PROJECT_DIR)/Common_Demo/include/ \
 			   -I$(top_srcdir)/posix_simulator/portable/GCC/Posix \
-			   -I$(KERNEL_DIR)/FreeRTOS_Kernel/include
+			   -IFreeRTOS_KERNEL$(KERNEL_DIR)/FreeRTOS_Kernel/include
 
 if FREERTOS_CMSIS
 AM_CPPFLAGS += \

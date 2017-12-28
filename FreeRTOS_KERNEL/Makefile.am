@@ -5,4 +5,4 @@ DIST_SUBDIRS =
 
 noinst_LIBRARIES =
 
-include $(VERISIO_DIR)/Makefile.am
+include $(KERNEL_DIR)/Makefile.am
