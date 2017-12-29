@@ -369,11 +369,12 @@ void vPortClearInterruptMask( portBASE_TYPE xMask )
  */
 void prvSetupTimerInterrupt( void )
 {
+	/*FIXME: use timer_create serial api to do (option:timerfd_create())*/
 struct itimerval itimer, oitimer;
 portTickType xMicroSeconds = portTICK_RATE_MICROSECONDS;
 
 	/* Initialise the structure with the current timer information. */
-	if ( 0 == getitimer( TIMER_TYPE, &itimer ) )
+	if ( 0 == getitimer( TIMER_TYPE, &itimer ) ) 
 	{
 		/* Set the interval between timer events. */
 		itimer.it_interval.tv_sec = 0;
