@@ -1,8 +1,10 @@
 
+if !FREERTOS_CMSIS
+if KERNEL_V5_4_2
 noinst_LIBRARIES += libapp.a	
 
 libapp_a_CPPFLAGS = \
-			 -I$(srcdir)/Common_Demo/include \
+			 -I$(srcdir)/$(DEMO_DIR)/include \
 			 $(AM_CPPFLAGS)
 
 # It can compile each task in each folder.
@@ -46,3 +48,5 @@ libapp_a_SOURCES = \
 libapp_a_SOURCES += \
 				   %reldir%/ParTest/partest.c \
 				   %reldir%/Common_Demo/include/partest.h
+endif
+endif

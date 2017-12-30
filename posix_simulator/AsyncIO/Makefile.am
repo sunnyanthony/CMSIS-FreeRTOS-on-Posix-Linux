@@ -1,13 +1,11 @@
 
-AM_CPPFLAGS =
+libasynio_lib_la_CPPFLAGS = \
+			   $(AM_CPPFLAGS)
 libasynio_lib_la_SOURCES =
 
 # ----------------------------------- #
 
-AM_CPPFLAGS += \
-		%reldir%
-
-noinst_LTLIBRARIES = libasynio_lib.la
+noinst_LTLIBRARIES += libasynio_lib.la
 
 libasynio_lib_la_SOURCES += \
 		%reldir%/AsyncIOSerial.h \

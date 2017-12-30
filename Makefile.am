@@ -9,11 +9,11 @@ BUILT_SOURCES = project/$(PROJECT_DIR)/main.c #Freertos_KERNEL/Freertos_vx.x.x
 
 # ------------------------------------------- #
 SUBDIRS = \
+		  FreeRTOS_KERNEL \
 		  posix_simulator \
-		  Freerots_KERNEL \
 		  project
 
-# ACLOCAL_AMFLAGS = -I m4
+ACLOCAL_AMFLAGS = -I m4
 
 
 # ------------------------------------------- #
@@ -23,7 +23,7 @@ AM_CPPFLAGS += \
 			   -I$(top_srcdir)/posix_simulator/AsyncIO \
 			   -Iproject/$(PROJECT_DIR)/Common_Demo/include/ \
 			   -I$(top_srcdir)/posix_simulator/portable/GCC/Posix \
-			   -IFreeRTOS_KERNEL$(KERNEL_DIR)/FreeRTOS_Kernel/include
+			   -IFreeRTOS_KERNEL/$(KERNEL_DIR)/FreeRTOS_Kernel/include
 
 if FREERTOS_CMSIS
 AM_CPPFLAGS += \
@@ -41,12 +41,14 @@ if FREERTOS_CMSIS
 freertos_os_libs += $(cmsis_interface)
 endif
 
-freertos_kernel_libs += $(top_srcdir)/Freertos_KERNEL/$(KERNEL_DIR)/kernel.a
+freertos_kernel_libs += $(top_srcdir)/Freertos_KERNEL/$(KERNEL_DIR)/libkernel.a
 
 freertos_os_libs += $(freertos_kernel_libs)
 
-platform_libs += $(top_srcdir)/posix_simulator/portable.a $(top_srcdir)/posix_simulator/posix.a
+platform_libs += $(top_srcdir)/posix_simulator/libport_lib.a
+platform_libs += $(top_srcdir)/posix_simulator/libfileio_lib.a
+platform_libs += $(top_srcdir)/posix_simulator/libasynio_lib.a
 
-application_libs += $(top_srcdir)/project/$(PROJECT_DIR)/app.a 
+application_libs += $(top_srcdir)/project/$(PROJECT_DIR)/libapp.a 
 
 target_LDADD += $(freertos_os_libs) $(platform_libs) $(application_libs)

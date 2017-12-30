@@ -1,27 +1,24 @@
 
 
-AC_CPPFLAGS =
-if ARM_FREERTOS_CMSIS
-AC_CPPFLAGS += -D__CMSIS_RTOS
-endif
+libkernel_a_CPPFLAGS = $(AM_CPPFLAGS)
 
-noinst_LIBRARIES = libkernel.a
-libkernel_a_SOURCE =
+noinst_LIBRARIES += libkernel.a
+libkernel_a_SOURCES =
 
 # include %reldir%/include
-libkernel_a_SOURCE += \
-					  include/FreeRTOS.h \
-					  croutine.c \
-					  include/croutine.h \
-					  include/mpu_wrappers.h \
-					  include/projdefs.h \
-					  include/semphr.h \
-					  include/StackMacros.h \
-					  list.c \
-					  include/list.h \
-					  include/portable.h \
-					  queue.c \
-					  include/queue.h \
-					  task.c \
-					  include/task.h
+libkernel_a_SOURCES += \
+					  %reldir%/include/FreeRTOS.h \
+					  %reldir%/croutine.c \
+					  %reldir%/include/croutine.h \
+					  %reldir%/include/mpu_wrappers.h \
+					  %reldir%/include/projdefs.h \
+					  %reldir%/include/semphr.h \
+					  %reldir%/include/StackMacros.h \
+					  %reldir%/list.c \
+					  %reldir%/include/list.h \
+					  %reldir%/include/portable.h \
+					  %reldir%/queue.c \
+					  %reldir%/include/queue.h \
+					  %reldir%/task.c \
+					  %reldir%/include/task.h
 
