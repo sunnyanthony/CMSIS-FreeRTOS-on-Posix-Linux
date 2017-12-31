@@ -4,7 +4,7 @@ if KERNEL_V5_4_2
 noinst_LIBRARIES += libapp.a	
 
 libapp_a_CPPFLAGS = \
-			 -I$(srcdir)/$(DEMO_DIR)/include \
+			 -I$(top_srcdir)/project/$(PROJECT_DIR)/$(DEMO_DIR)/include \
 			 $(AM_CPPFLAGS)
 
 # It can compile each task in each folder.
