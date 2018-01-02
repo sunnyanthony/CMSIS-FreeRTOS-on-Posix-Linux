@@ -98,7 +98,7 @@ PROJECT_DIR=FreeRTOS_
 AS_IF( [test x$CMSIS = xyes ],[PROJECT_DIR+=with_CMSIS_],[PROJECT_DIR+=without_CMSIS_])
 PROJECT_DIR+=$KERNEL
 AC_SUBST(PROJECT_DIR)
-
+AC_CONFIG_LINKS([project/main.c:project/$PROJECT_DIR/main.c])
 
 # ----------------------- makefile generated ---------------------- #
 AC_CONFIG_FILES([Makefile
