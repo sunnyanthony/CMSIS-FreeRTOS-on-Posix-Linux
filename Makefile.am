@@ -1,7 +1,7 @@
 
 # ------------------------------------------- #
 AM_CPPFLAGS = 
-target_SOURCE =
+target_SOURCES =
 target_LDADD =
 target_LDFLAGS =
 noinst_PROGRAMS = target
@@ -10,8 +10,8 @@ BUILT_SOURCES = project/$(PROJECT_DIR)/main.c #Freertos_KERNEL/Freertos_vx.x.x
 # ------------------------------------------- #
 SUBDIRS = \
 		  FreeRTOS_KERNEL \
-		  posix_simulator \
-		  project
+		  project \
+		  posix_simulator
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -30,6 +30,8 @@ AM_CPPFLAGS += \
 			   -I$(top_srcdir)/cmsis_interface/CMSIS-FreeRTOS/CMSIS/RTOS2/FreeRTOS/Include1
 endif
 
+target_SOURCES += $(BUILT_SOURCES)
+
 # -------------------------------------------- #
 freertos_kernel_libs =
 platform_libs =
@@ -47,7 +49,7 @@ freertos_os_libs += $(freertos_kernel_libs)
 
 platform_libs += $(top_srcdir)/posix_simulator/libport_lib.a
 platform_libs += $(top_srcdir)/posix_simulator/libfileio_lib.a
-platform_libs += $(top_srcdir)/posix_simulator/libasynio_lib.a
+# platform_libs += $(top_srcdir)/posix_simulator/libasynio_lib.a
 
 application_libs += $(top_srcdir)/project/$(PROJECT_DIR)/libapp.a 
 
