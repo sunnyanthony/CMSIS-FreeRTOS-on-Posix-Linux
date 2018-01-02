@@ -1,7 +1,7 @@
 
 
 libkernel_a_CPPFLAGS = \
-					   -I$(top_srcdir)/FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include \
+					   -I$(top_srcdir)/FreeRTOS_KERNEL/FreeRTOS_v5.4.2/Source/include \
 					   -I$(top_srcdir)/FreeRTOS_KERNEL/FreeRTOS_v5.4.2 \
 					   -I$(top_srcdir)/posix_simulator/portable/GCC/Posix \
 					   $(AM_CPPFLAGS)
