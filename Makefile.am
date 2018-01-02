@@ -45,7 +45,7 @@ if FREERTOS_CMSIS
 freertos_os_libs += $(cmsis_interface)
 endif
 
-freertos_kernel_libs += $(top_srcdir)/Freertos_KERNEL/libkernel.a
+freertos_kernel_libs += $(top_srcdir)/FreeRTOS_KERNEL/libkernel.a
 
 freertos_os_libs += $(freertos_kernel_libs)
 
