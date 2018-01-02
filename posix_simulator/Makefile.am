@@ -20,4 +20,4 @@ include $(srcdir)/portable/Makefile.am
 
 include $(srcdir)/AsyncIO/Makefile.am
 
-include $(srcdir)/FIleIO/Makefile.am
+include $(srcdir)/FileIO/Makefile.am
