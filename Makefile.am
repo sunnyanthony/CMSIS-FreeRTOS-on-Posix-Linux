@@ -24,7 +24,7 @@ AM_CPPFLAGS += \
 			   -I$(top_srcdir)/posix_simulator/FileIO \
 			   -Iproject/$(PROJECT_DIR)/Common_Demo/include/ \
 			   -I$(top_srcdir)/posix_simulator/portable/GCC/Posix \
-			   -IFreeRTOS_KERNEL/$(KERNEL_DIR)/FreeRTOS_Kernel/include \
+			   -IFreeRTOS_KERNEL/$(KERNEL_DIR)/Source/include \
 			   -IFreeRTOS_KERNEL/$(KERNEL_DIR)/
 
 if FREERTOS_CMSIS
