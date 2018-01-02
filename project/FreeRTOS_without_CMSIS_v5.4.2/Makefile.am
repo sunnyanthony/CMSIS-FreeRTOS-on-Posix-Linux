@@ -46,7 +46,7 @@ libapp_a_SOURCES = \
 				   %reldir%/Common_Demo/include/recmutex.h
 
 libapp_a_SOURCES += \
-				   %reldir%/ParTest/partest.c \
+				   %reldir%/ParTest/ParTest.c \
 				   %reldir%/Common_Demo/include/partest.h
 endif
 endif
