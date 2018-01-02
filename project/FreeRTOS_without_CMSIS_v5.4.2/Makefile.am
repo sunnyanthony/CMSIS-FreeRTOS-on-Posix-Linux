@@ -10,25 +10,25 @@ libapp_a_CPPFLAGS = \
 # It can compile each task in each folder.
 # Or, it also can use different libtaskx_a_xxxxx to make each task to each static library
 libapp_a_SOURCES = \
-				   %reldir%/Common_Demo/FULL/BlockQ.c \
+				   %reldir%/Common_Demo/Full/BlockQ.c \
 				   %reldir%/Common_Demo/include/BlockQ.h \
-				   %reldir%/Common_Demo/FULL/PollQ.c \
+				   %reldir%/Common_Demo/Full/PollQ.c \
 				   %reldir%/Common_Demo/include/PollQ.h \
-				   %reldir%/Common_Demo/FULL/death.c \
+				   %reldir%/Common_Demo/Full/death.c \
 				   %reldir%/Common_Demo/include/death.h \
-				   %reldir%/Common_Demo/FULL/dynamic.c \
+				   %reldir%/Common_Demo/Full/dynamic.c \
 				   %reldir%/Common_Demo/include/dynamic.h \
-				   %reldir%/Common_Demo/FULL/events.c \
+				   %reldir%/Common_Demo/Full/events.c \
 				   %reldir%/Common_Demo/include/mevents.h \
-				   %reldir%/Common_Demo/FULL/flash.c \
+				   %reldir%/Common_Demo/Full/flash.c \
 				   %reldir%/Common_Demo/include/flash.h \
-				   %reldir%/Common_Demo/FULL/flop.c \
+				   %reldir%/Common_Demo/Full/flop.c \
 				   %reldir%/Common_Demo/include/flop.h \
-				   %reldir%/Common_Demo/FULL/integer.c \
+				   %reldir%/Common_Demo/Full/integer.c \
 				   %reldir%/Common_Demo/include/integer.h \
-				   %reldir%/Common_Demo/FULL/print.c \
+				   %reldir%/Common_Demo/Full/print.c \
 				   %reldir%/Common_Demo/include/print.h \
-				   %reldir%/Common_Demo/FULL/semtest.c \
+				   %reldir%/Common_Demo/Full/semtest.c \
 				   %reldir%/Common_Demo/include/semtest.h \
 				   %reldir%/Common_Demo/Minimal/GenQTest.c \
 				   %reldir%/Common_Demo/include/GenQTest.h \
