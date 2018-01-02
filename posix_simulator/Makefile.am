@@ -9,7 +9,7 @@ noinst_HEADERS =
 
 AM_CPPFLAGS = \
     			-I$(top_srcdir)/project/$(PROJECT_DIR)/$(DEMO_DIR)/include \
-				-I$(top_srcdir)/FreeRTOS_KERNEL/$(KERNEL_DIR)/FreeRTOS_Kernel/include \
+				-I$(top_srcdir)/FreeRTOS_KERNEL/$(KERNEL_DIR)/Source/include \
 				-I$(top_srcdir)/FreeRTOS_KERNEL/$(KERNEL_DIR)/ \
 				-I$(srcdir)/portable/GCC/Posix/
 
