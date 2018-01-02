@@ -1,4 +1,4 @@
-if KERNEL_V5_4_2
+if KERNEL_V8_2_3
 noinst_HEADERS += \
 				  %reldir%/FreeRTOS.h \
 				  %reldir%/StackMacros.h \
@@ -10,5 +10,10 @@ noinst_HEADERS += \
 				  %reldir%/queue.h \
 				  %reldir%/semphr.h \
 				  %reldir%/task.h
+
+noinst_HEADERS += \
+				  %reldir%/deprecated_definitions.h \
+				  %reldir%/timers.h \
+				  %reldir%/event_groups.h
 
 endif

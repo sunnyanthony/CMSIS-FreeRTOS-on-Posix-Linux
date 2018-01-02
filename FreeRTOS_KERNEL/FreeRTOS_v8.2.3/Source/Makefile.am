@@ -1,8 +1,8 @@
-if KERNEL_V5_4_2
+if KERNEL_V8_2_3
 
 libkernel_a_CPPFLAGS = \
-					   -I$(top_srcdir)/FreeRTOS_KERNEL/FreeRTOS_v5.4.2/Source/include \
-					   -I$(top_srcdir)/FreeRTOS_KERNEL/FreeRTOS_v5.4.2 \
+					   -I$(top_srcdir)/FreeRTOS_KERNEL/FreeRTOS_v8.2.3/Source/include \
+					   -I$(top_srcdir)/FreeRTOS_KERNEL/FreeRTOS_v8.2.3 \
 					   -I$(top_srcdir)/posix_simulator/portable/GCC/Posix \
 					   $(AM_CPPFLAGS)
 
@@ -26,4 +26,12 @@ libkernel_a_SOURCES += \
 					  %reldir%/include/task.h \
 					  %reldir%/include/FreeRTOS.h
 
+
+libkernel_a_SOURCES += \
+					   %reldir%/event_groups.c \
+					   %reldir%/include/event_groups.h \
+					   %reldir%/timers.c \
+					   %reldir%/include/timers.h \
+					   %reldir%/include/deprecated_definitions.h
 endif
+

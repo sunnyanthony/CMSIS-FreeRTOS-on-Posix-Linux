@@ -1,0 +1,41 @@
+FreeRTOS_without_CMSIS_v5.4.2/Common_Demo/Minimal/libapp_a-recmutex.o: \
+  FreeRTOS_without_CMSIS_v5.4.2/Common_Demo/Minimal/recmutex.c \
+  ../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/FreeRTOS.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/9.0.0/include/stddef.h \
+  /Library/Developer/CommandLineTools/usr/lib/clang/9.0.0/include/__stddef_max_align_t.h \
+  ../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/projdefs.h \
+  ../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOSConfig.h \
+  ../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/portable.h \
+  ../posix_simulator/portable/GCC/Posix/portmacro.h \
+  ../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/mpu_wrappers.h \
+  ../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/task.h \
+  ../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/list.h \
+  ../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/semphr.h \
+  ../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/queue.h \
+  ../project/FreeRTOS_without_CMSIS_v5.4.2/Common_Demo/include/recmutex.h
+
+../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/FreeRTOS.h:
+
+/Library/Developer/CommandLineTools/usr/lib/clang/9.0.0/include/stddef.h:
+
+/Library/Developer/CommandLineTools/usr/lib/clang/9.0.0/include/__stddef_max_align_t.h:
+
+../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/projdefs.h:
+
+../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOSConfig.h:
+
+../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/portable.h:
+
+../posix_simulator/portable/GCC/Posix/portmacro.h:
+
+../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/mpu_wrappers.h:
+
+../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/task.h:
+
+../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/list.h:
+
+../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/semphr.h:
+
+../FreeRTOS_KERNEL/FreeRTOS_v5.4.2/FreeRTOS_Kernel/include/queue.h:
+
+../project/FreeRTOS_without_CMSIS_v5.4.2/Common_Demo/include/recmutex.h:
