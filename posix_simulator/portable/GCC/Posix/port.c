@@ -105,6 +105,7 @@ static volatile portBASE_TYPE xServicingTick = pdFALSE;
 static volatile portBASE_TYPE xPendYield = pdFALSE;
 static volatile portLONG lIndexOfLastAddedTask = 0;
 static volatile unsigned portBASE_TYPE uxCriticalNesting;
+static volatile portBASE_TYPE xInterrupRegister = pdFALSE;
 /*-----------------------------------------------------------*/
 
 /*
@@ -334,6 +335,32 @@ pthread_t xTaskToResume;
 			(void)pthread_mutex_unlock( &xSingleThreadMutex );
 		}
 	}
+}
+/*-----------------------------------------------------------*/
+
+portBASE_TYBE xPortInterruptsStatus( void )
+{
+	volatile portBASE_TYPE temp;
+	temp = xInterrupRegister;
+	return temp;
+}
+/*-----------------------------------------------------------*/
+
+portBASE_TYBE xPortInterruptsSet( void )
+{
+	volatile portBASE_TYPE temp;
+	temp = xInterrupRegister;
+	xInterrupRegister = pdTRUE;
+	return temp;
+}
+/*-----------------------------------------------------------*/
+
+portBASE_TYBE xPortInterruptsExit( void )
+{
+	volatile portBASE_TYPE temp;
+	temp = xInterrupRegister;
+	xInterrupRegister = pdFALSE;
+	return temp;
 }
 /*-----------------------------------------------------------*/
 
