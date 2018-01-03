@@ -338,7 +338,7 @@ pthread_t xTaskToResume;
 }
 /*-----------------------------------------------------------*/
 
-portBASE_TYBE xPortInterruptsStatus( void )
+portBASE_TYPE xPortInterruptsStatus( void )
 {
 	volatile portBASE_TYPE temp;
 	temp = xInterrupRegister;
@@ -346,7 +346,7 @@ portBASE_TYBE xPortInterruptsStatus( void )
 }
 /*-----------------------------------------------------------*/
 
-portBASE_TYBE xPortInterruptsSet( void )
+portBASE_TYPE xPortInterruptsSet( void )
 {
 	volatile portBASE_TYPE temp;
 	temp = xInterrupRegister;
@@ -355,7 +355,7 @@ portBASE_TYBE xPortInterruptsSet( void )
 }
 /*-----------------------------------------------------------*/
 
-portBASE_TYBE xPortInterruptsExit( void )
+portBASE_TYPE xPortInterruptsExit( void )
 {
 	volatile portBASE_TYPE temp;
 	temp = xInterrupRegister;
