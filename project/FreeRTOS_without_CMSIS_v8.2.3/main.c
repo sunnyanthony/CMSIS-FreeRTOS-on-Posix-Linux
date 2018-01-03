@@ -312,6 +312,7 @@ xQueueHandle xUDPReceiveQueue = (xQueueHandle)pvParameters;
 			}
 			else
 			{
+#if configUSE_STATS_FORMATTING_FUNCTIONS > 0
 				/* Timeout. Send the data. */
 				if ( iSendTaskList )
 				{
@@ -321,6 +322,9 @@ xQueueHandle xUDPReceiveQueue = (xQueueHandle)pvParameters;
 				{
 					vTaskGetRunTimeStats( xPacket.ucPacket );
 				}
+#else
+				*(xPacket.ucPacket) = 0x00;
+#endif
 				iSendTaskList = !iSendTaskList;
 
 				/* Send the Updated Tasks list. */
