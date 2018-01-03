@@ -83,14 +83,31 @@ extern "C" {
 	typedef unsigned portLONG portTickType;
 	#define portMAX_DELAY ( portTickType ) 0xffffffff
 #endif
+
+/*-----------------------------------------------------------
+ * Type define for v8.2.3 kernel
+ *
+ * add Stack, Base, UBase and Tick types
+ *-----------------------------------------------------------
+ */
+typedef portSTACK_TYPE StackType_t;
+typedef long BaseType_t;
+typedef unsigned long UBaseType_t;
+typedef portTickType TickType_t;
+
 /*-----------------------------------------------------------*/
 
 /* Architecture specifics. */
 #define portSTACK_GROWTH				( -1 )
-#define portTICK_RATE_MS				( ( portTickType ) 1000 / configTICK_RATE_HZ )
+#define portTICK_PERIOD_MS				( ( portTickType ) 1000 / configTICK_RATE_HZ )
 #define portTICK_RATE_MICROSECONDS		( ( portTickType ) 1000000 / configTICK_RATE_HZ )
 #define portBYTE_ALIGNMENT				4
 #define portREMOVE_STATIC_QUALIFIER
+
+#ifndef
+#define portTICK_RATE_MS				portTICK_PERIOD_MS
+#endif
+
 /*-----------------------------------------------------------*/
 
 
