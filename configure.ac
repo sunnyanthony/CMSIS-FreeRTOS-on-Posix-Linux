@@ -8,7 +8,7 @@ AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
-AC_CONFIG_HEADERS([config.h])
+# AC_CONFIG_HEADERS([config.h])
 
 
 # Checks for programs.
@@ -87,6 +87,7 @@ AC_SUBST(KERNEL_DIR)
 AM_CONDITIONAL([KERNEL_V5_4_2],[test x$KERNEL_VERSION = xV5])
 AM_CONDITIONAL([KERNEL_V8_2_3],[test x$KERNEL_VERSION = xV8])
 AM_CONDITIONAL([KERNEL_V10_0_0],[test x$KERNEL_VERSION = xV10])
+AC_DEFINE_UNQUOTED([KERNEL_VERSION],[$KERNEL_VERSION])
 
 # -------------------- demo selection ---------------- #
 DEMO_DIR=
