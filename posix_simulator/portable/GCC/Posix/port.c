@@ -130,6 +130,16 @@ static void prvDeleteThread( void *xThreadId );
  */
 void vPortYield( void );
 void vPortSystemTickHandler( int sig );
+enum interrupt{
+	NON,
+	TICKS_INTERRUPT,
+	SYSCALL_INTERRUPT, /* for kernel system call, e.g. context switch ...etc.*/
+}
+#ifdef FREERTOS_CMSIS
+volatile portBASE_TYPE v_ipsr;
+static portBASE_TYPE xPortInterruptsSet(portBASE_TYPE mask);
+static portBASE_TYPE xPortInterruptsClean(portBASE_TYPE mask);
+#endif
 
 /*
  * Start first task is a separate function so it can be tested in isolation.
@@ -155,6 +165,10 @@ xParams *pxThisThreadParams = pvPortMalloc( sizeof( xParams ) );
 	/* No need to join the threads. */
 	pthread_attr_init( &xThreadAttributes );
 	pthread_attr_setdetachstate( &xThreadAttributes, PTHREAD_CREATE_DETACHED );
+	/*TODO: add stack size*/
+	/* stacksize = pxTopOfStack;
+	 * pthread_attr_setstacksize( &xThreadAttributes, stacksize);
+	 */
 
 	/* Add the task parameters. */
 	pxThisThreadParams->pxCode = pxCode;
@@ -338,28 +352,20 @@ pthread_t xTaskToResume;
 }
 /*-----------------------------------------------------------*/
 
-portBASE_TYPE xPortInterruptsStatus( void )
+portBASE_TYPE xPortInterruptsSet(portBASE_TYPE mask)
 {
 	volatile portBASE_TYPE temp;
-	temp = xInterrupRegister;
+	v_ipsr |= mask;
+	temp = v_ipsr;
 	return temp;
 }
 /*-----------------------------------------------------------*/
 
-portBASE_TYPE xPortInterruptsSet( void )
+portBASE_TYPE xPortInterruptsClean(portBASE_TYPE mask)
 {
 	volatile portBASE_TYPE temp;
-	temp = xInterrupRegister;
-	xInterrupRegister = pdTRUE;
-	return temp;
-}
-/*-----------------------------------------------------------*/
-
-portBASE_TYPE xPortInterruptsExit( void )
-{
-	volatile portBASE_TYPE temp;
-	temp = xInterrupRegister;
-	xInterrupRegister = pdFALSE;
+	v_ipsr &= ~mask;
+	temp = v_ipsr;
 	return temp;
 }
 /*-----------------------------------------------------------*/
@@ -389,7 +395,7 @@ void vPortClearInterruptMask( portBASE_TYPE xMask )
 	xInterruptsEnabled = xMask;
 }
 /*-----------------------------------------------------------*/
-
+/*TODO: update the timer code to modern using */
 /*
  * Setup the systick timer to generate the tick interrupts at the required
  * frequency.
@@ -428,6 +434,9 @@ void vPortSystemTickHandler( int sig )
 {
 pthread_t xTaskToSuspend;
 pthread_t xTaskToResume;
+	portBASE_TYPE mask = TICKS_INTERRUPT;
+	
+	xPortInterruptsSet(mask);
 
 	if ( ( pdTRUE == xInterruptsEnabled ) && ( pdTRUE != xServicingTick ) )
 	{
@@ -437,7 +446,7 @@ pthread_t xTaskToResume;
 
 			xTaskToSuspend = prvGetThreadHandle( xTaskGetCurrentTaskHandle() );
 			/* Tick Increment. */
-#if KERNEL_VERSION == V5
+#if FREERTOS_KERNEL_VERSION == V5
 			vTaskIncrementTick();
 #else
 			xTaskIncrementTick();
@@ -447,6 +456,10 @@ pthread_t xTaskToResume;
 #if ( configUSE_PREEMPTION == 1 )
 			vTaskSwitchContext();
 #endif
+
+			/*
+			 * FIXME: consider to use vPortYield();
+			 */
 			xTaskToResume = prvGetThreadHandle( xTaskGetCurrentTaskHandle() );
 
 			/* The only thread that can process this tick is the running thread. */
@@ -476,6 +489,8 @@ pthread_t xTaskToResume;
 	{
 		xPendYield = pdTRUE;
 	}
+
+	xPortInterruptsClean(mask);
 }
 /*-----------------------------------------------------------*/
 
@@ -549,7 +564,12 @@ void * pParams = pxParams->pvParams;
 
 void prvSuspendSignalHandler(int sig)
 {
+	/* Suspending ... */
+
 sigset_t xSignals;
+	portBASE_TYPE mask = SYSCALL_INTERRUPT;
+	
+	xPortInterruptsSet(mask);
 
 	/* Only interested in the resume signal. */
 	sigemptyset( &xSignals );
@@ -562,11 +582,14 @@ sigset_t xSignals;
 		printf( "Releasing someone else's lock.\n" );
 	}
 
+	xPortInterruptsClean(mask);
 	/* Wait on the resume signal. */
 	if ( 0 != sigwait( &xSignals, &sig ) )
 	{
 		printf( "SSH: Sw %d\n", sig );
 	}
+
+	xPortInterruptsSet(mask);
 
 	/* Will resume here when the SIG_RESUME signal is received. */
 	/* Need to set the interrupts based on the task's critical nesting. */
@@ -578,6 +601,9 @@ sigset_t xSignals;
 	{
 		vPortDisableInterrupts();
 	}
+	xPortInterruptsClean(mask);
+
+	/* Resumed ... */
 }
 /*-----------------------------------------------------------*/
 
@@ -597,14 +623,18 @@ portBASE_TYPE xResult = pthread_mutex_lock( &xSuspendResumeThreadMutex );
 	}
 }
 /*-----------------------------------------------------------*/
-
+/* FIXME: un-safe for this function */
 void prvResumeSignalHandler(int sig)
 {
+	portBASE_TYPE mask = SYSCALL_INTERRUPT;
+	
+	xPortInterruptsSet(mask);
 	/* Yield the Scheduler to ensure that the yielding thread completes. */
 	if ( 0 == pthread_mutex_lock( &xSingleThreadMutex ) )
 	{
 		(void)pthread_mutex_unlock( &xSingleThreadMutex );
 	}
+	xPortInterruptsClean(mask);
 }
 /*-----------------------------------------------------------*/
 
@@ -645,6 +675,7 @@ portLONG lIndex;
 		pxThreads[ lIndex ].uxCriticalNesting = 0;
 	}
 
+	/* threads will share SIGHAND in the process */
 	sigsuspendself.sa_flags = 0;
 	sigsuspendself.sa_handler = prvSuspendSignalHandler;
 	sigfillset( &sigsuspendself.sa_mask );
