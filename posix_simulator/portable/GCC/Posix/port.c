@@ -65,6 +65,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <limits.h>
+#include <stdint.h>
 
 /* Scheduler includes. */
 #include "FreeRTOS.h"
