@@ -1,0 +1,26 @@
+# object file
+*.o
+# shared library
+*.a 
+#dynamic library
+*.la
+
+*.swp
+#dep
+.deps/
+
+#Makefile
+Makefile*
+!Makefile.am
+
+#autoconf
+aclocal.m4
+autom4te.cache/
+build-aux/
+config*
+libtool
+!configure.ac
+
+
+#target
+target
