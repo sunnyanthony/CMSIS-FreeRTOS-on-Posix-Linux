@@ -18,6 +18,8 @@ AC_PROG_CC
 AC_PROG_MAKE_SET
 # AC_PROG_RANLIB
 AC_PROG_CPP
+
+# Checks for configuration flags
 AS_IF([test -z $CMSIS],[CMSIS=no])
 ENABLE_CMSIS=no
 AS_IF( [test x$CMSIS = xyes ],
@@ -25,6 +27,16 @@ AS_IF( [test x$CMSIS = xyes ],
 	  ]
 	  )
 AM_CONDITIONAL([FREERTOS_CMSIS],[test x$ENABLE_CMSIS = xyes])
+AS_IF([test x$ENABLE_CMSIS = xyes],[AC_DEFINE([FREERTOS_CMSIS])])
+
+AC_ARG_ENABLE([asyncio],
+			  [ --enable-asyncio    Turn on AsyncIO, default is yes],
+			  [case "${enableval}" in
+			   yes) asyncio=true ;;
+			   no)  asyncio=false ;;
+			   *) AC_MSG_ERROR([bad value ${enableval} for --enable-asyncio]) ;;
+	   		   esac],[asynio=true])
+AM_CONDITIONAL([USE_ASYNCIO], [test x$asyncio = xtrue])
 
 # for shared library
 AM_PROG_AR
@@ -87,7 +99,8 @@ AC_SUBST(KERNEL_DIR)
 AM_CONDITIONAL([KERNEL_V5_4_2],[test x$KERNEL_VERSION = xV5])
 AM_CONDITIONAL([KERNEL_V8_2_3],[test x$KERNEL_VERSION = xV8])
 AM_CONDITIONAL([KERNEL_V10_0_0],[test x$KERNEL_VERSION = xV10])
-AC_DEFINE_UNQUOTED([KERNEL_VERSION],[$KERNEL_VERSION])
+# KERNEL_VERSION macro will be collise with in cmsis header file
+AC_DEFINE_UNQUOTED([FREERTOS_KERNEL_VERSION],[$KERNEL_VERSION])
 AC_DEFINE([V5],[5])
 AC_DEFINE([V8],[8])
 AC_DEFINE([V10],[10])
@@ -96,6 +109,7 @@ AC_DEFINE([V10],[10])
 DEMO_DIR=
 AS_IF([test -z $DEMO],[DEMO=Common_Demo])
 AC_SUBST(DEMO_DIR,[$DEMO])
+AM_CONDITIONAL([APPLICATION],[test x$DEMO = xCommon_Demo])
 
 # --------------------- project setting --------------- #
 PROJECT_DIR=FreeRTOS_
@@ -109,5 +123,6 @@ AC_CONFIG_FILES([Makefile
                  project/Makefile
 				 posix_simulator/Makefile
 				 FreeRTOS_KERNEL/Makefile
+				 cmsis_interface/Makefile
 				])
 AC_OUTPUT
