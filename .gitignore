@@ -8,6 +8,7 @@
 *.swp
 #dep
 .deps/
+.dirtamp/
 
 #Makefile
 Makefile*
