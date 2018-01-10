@@ -130,16 +130,16 @@ static void prvDeleteThread( void *xThreadId );
  */
 void vPortYield( void );
 void vPortSystemTickHandler( int sig );
-enum interrupt{
-	NON,
-	TICKS_INTERRUPT,
-	SYSCALL_INTERRUPT, /* for kernel system call, e.g. context switch ...etc.*/
-}
 #ifdef FREERTOS_CMSIS
-volatile portBASE_TYPE v_ipsr;
+volatile uint32_t v_ipsr;
 static portBASE_TYPE xPortInterruptsSet(portBASE_TYPE mask);
 static portBASE_TYPE xPortInterruptsClean(portBASE_TYPE mask);
 #endif
+enum{
+	NON,
+	TICKS_INTERRUPT,
+	SYSCALL_INTERRUPT, /* for kernel system call, e.g. context switch ...etc.*/
+};
 
 /*
  * Start first task is a separate function so it can be tested in isolation.
@@ -354,19 +354,23 @@ pthread_t xTaskToResume;
 
 portBASE_TYPE xPortInterruptsSet(portBASE_TYPE mask)
 {
-	volatile portBASE_TYPE temp;
+#ifdef FREERTOS_CMSIS
+	volatile uint32_t temp;
 	v_ipsr |= mask;
 	temp = v_ipsr;
 	return temp;
+#endif
 }
 /*-----------------------------------------------------------*/
 
 portBASE_TYPE xPortInterruptsClean(portBASE_TYPE mask)
 {
-	volatile portBASE_TYPE temp;
+#ifdef FREERTOS_CMSIS
+	volatile uint32_t temp;
 	v_ipsr &= ~mask;
 	temp = v_ipsr;
 	return temp;
+#endif
 }
 /*-----------------------------------------------------------*/
 
@@ -835,3 +839,27 @@ struct tms xTimes;
 	(void)ulTotalTime;
 }
 /*-----------------------------------------------------------*/
+
+void vAssertCalled( unsigned long ulLine, const char * const pcFileName ,const char * const pcFuncName)
+{
+volatile uint32_t ulDebugger = 0;
+
+	taskDISABLE_INTERRUPTS();
+
+ 	taskENTER_CRITICAL();
+	{
+		{
+			printf("Assert(%s) at line: %d file: %s\n",pcFuncName, ulLine, pcFileName);
+		}
+
+		/* You can step out of this function to debug the assertion by using
+		the debugger to set ulSetToNonZeroInDebuggerToContinue to a non-zero
+		value. */
+		while( ulDebugger == 0 )
+		{
+				;/* portNOP()*/
+		}
+	}
+	taskEXIT_CRITICAL();
+	taskENABLE_INTERRUPTS();
+}
