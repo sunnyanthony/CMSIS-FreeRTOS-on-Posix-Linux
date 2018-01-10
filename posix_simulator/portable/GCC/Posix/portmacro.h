@@ -88,6 +88,7 @@ extern "C" {
  * Type define for v8.2.3 kernel
  *
  * add Stack, Base, UBase and Tick types
+ * or, you could set configENABLE_BACKWARD_COMPATIBILITY for it
  *-----------------------------------------------------------
  */
 typedef portSTACK_TYPE StackType_t;
@@ -104,8 +105,10 @@ typedef portTickType TickType_t;
 #define portBYTE_ALIGNMENT				4
 #define portREMOVE_STATIC_QUALIFIER
 
+#if KERNEL_VERSION == V5
 #ifndef portTICK_RATE_MS
 #define portTICK_RATE_MS				portTICK_PERIOD_MS
+#endif
 #endif
 
 /*-----------------------------------------------------------*/
@@ -118,6 +121,11 @@ extern void vPortYield( void );
 #define portYIELD()					vPortYield()
 
 #define portEND_SWITCHING_ISR( xSwitchRequired ) if( xSwitchRequired ) vPortYieldFromISR()
+
+#define portYIELD_FROM_ISR( xSwitchRequired)          \
+		if(xSwitchRequired != pdFALSE){               \
+            portEND_SWITCHING_ISR( xSwitchRequired ); \
+		}
 /*-----------------------------------------------------------*/
 
 
