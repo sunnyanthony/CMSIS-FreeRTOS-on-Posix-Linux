@@ -4,11 +4,13 @@
 *.a 
 #dynamic library
 *.la
+# Libtool object
+*.lo
 
 *.swp
 #dep
 .deps/
-.dirtamp/
+.dirstamp
 
 #Makefile
 Makefile*
@@ -18,8 +20,11 @@ Makefile*
 aclocal.m4
 autom4te.cache/
 build-aux/
+m4/
+autoscan.log
 config*
 libtool
+stamp-h1
 !configure.ac
 
 
