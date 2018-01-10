@@ -105,7 +105,7 @@ typedef portTickType TickType_t;
 #define portBYTE_ALIGNMENT				4
 #define portREMOVE_STATIC_QUALIFIER
 
-#if KERNEL_VERSION == V5
+#if FREERTOS_KERNEL_VERSION == V5
 #ifndef portTICK_RATE_MS
 #define portTICK_RATE_MS				portTICK_PERIOD_MS
 #endif

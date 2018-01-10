@@ -20,8 +20,10 @@ AC_PROG_MAKE_SET
 AC_PROG_CPP
 
 # Checks for configuration flags
-AS_IF([test -z $CMSIS],[CMSIS=no])
+ENABLE_ASYNCIO=true
 ENABLE_CMSIS=no
+
+AS_IF([test -z $CMSIS],[CMSIS=no])
 AS_IF( [test x$CMSIS = xyes ],
 	  [AC_CHECK_FILE(cmsis_interface/CMSIS-FreeRTOS/CMSIS/RTOS2/FreeRTOS/Include1/cmsis_os.h, [ENABLE_CMSIS=yes], [AC_MSG_ERROR([please clone freertos-cmsis submodule])])
 	  ]
@@ -32,11 +34,11 @@ AS_IF([test x$ENABLE_CMSIS = xyes],[AC_DEFINE([FREERTOS_CMSIS])])
 AC_ARG_ENABLE([asyncio],
 			  [ --enable-asyncio    Turn on AsyncIO, default is yes],
 			  [case "${enableval}" in
-			   yes) asyncio=true ;;
-			   no)  asyncio=false ;;
+			   yes) ENABLE_ASYNCIO=true ;;
+			   no)  ENABLE_ASYNCIO=false ;;
 			   *) AC_MSG_ERROR([bad value ${enableval} for --enable-asyncio]) ;;
 	   		   esac],[asynio=true])
-AM_CONDITIONAL([USE_ASYNCIO], [test x$asyncio = xtrue])
+AM_CONDITIONAL([USE_ASYNCIO], [test x$ENABLE_ASYNCIO = xtrue])
 
 # for shared library
 AM_PROG_AR

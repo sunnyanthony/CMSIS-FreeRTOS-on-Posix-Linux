@@ -21,7 +21,7 @@ ACLOCAL_AMFLAGS = -I m4
 noinst_HEADERS =
 
 AM_CPPFLAGS += \
-			   -Iproject/$(PROJECT_DIR)/$(DEMO)/include/ \
+			   -Iproject/$(PROJECT_DIR)/$(DEMO_DIR)/include/ \
 			   -I$(top_srcdir)/posix_simulator/portable/GCC/Posix \
 			   -IFreeRTOS_KERNEL/$(KERNEL_DIR)/Source/include \
 			   -IFreeRTOS_KERNEL/$(KERNEL_DIR)/
@@ -32,11 +32,9 @@ AM_CPPFLAGS += \
 			   -I$(top_srcdir)/cmsis_interface/src_modified
 endif
 
-if APPLICATION
 AM_CPPFLAGS += \
 			   -I$(top_srcdir)/posix_simulator/ \
 			   -I$(top_srcdir)/posix_simulator/FileIO
-endif
 
 target_SOURCES += project/main.c
 
