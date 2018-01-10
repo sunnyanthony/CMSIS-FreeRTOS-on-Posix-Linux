@@ -1,4 +1,4 @@
-
+if USE_ASYNCIO
 libasynio_lib_la_CPPFLAGS = \
 			   $(AM_CPPFLAGS)
 libasynio_lib_la_SOURCES =
@@ -22,3 +22,4 @@ libasynio_lib_la_SOURCES += \
 libasynio_lib_la_SOURCES += \
 		%reldir%/PosixMessageQueueIPC.h \
 		%reldir%/PosixMessageQueueIPC.c
+endif
