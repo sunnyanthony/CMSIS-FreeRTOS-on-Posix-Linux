@@ -10,9 +10,11 @@ BUILT_SOURCES = project/main.c
 # ------------------------------------------- #
 SUBDIRS = \
 		  FreeRTOS_KERNEL \
-		  cmsis_interface \
 		  project \
 		  posix_simulator
+if FREERTOS_CMSIS
+SUBDIRS += cmsis_interface
+endif
 
 ACLOCAL_AMFLAGS = -I m4
 
