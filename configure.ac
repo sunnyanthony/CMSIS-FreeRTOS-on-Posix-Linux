@@ -109,7 +109,7 @@ AC_DEFINE([V10],[10])
 DEMO_DIR=
 AS_IF([test -z $DEMO],[DEMO=Common_Demo])
 AC_SUBST(DEMO_DIR,[$DEMO])
-AM_CONDITIONAL([APPLICATION],[test x$DEMO = xCommon_Demo])
+AM_CONDITIONAL([APPLICATION],[test x$CMSIS = xno])
 
 # --------------------- project setting --------------- #
 PROJECT_DIR=FreeRTOS_
