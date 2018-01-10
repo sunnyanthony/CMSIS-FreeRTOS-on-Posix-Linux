@@ -29,7 +29,7 @@ AM_CPPFLAGS += \
 if FREERTOS_CMSIS
 AM_CPPFLAGS += \
 			   -I$(top_srcdir)/cmsis_interface/CMSIS-FreeRTOS/CMSIS/RTOS2/FreeRTOS/Include1 \
-			   -I$(top_srcdir)/cmsis_interface/
+			   -I$(top_srcdir)/cmsis_interface/src_modified
 endif
 
 if APPLICATION
