@@ -340,7 +340,9 @@ pthread_t xTaskToResume;
 			/* Remember and switch the critical nesting. */
 			prvSetTaskCriticalNesting( xTaskToSuspend, uxCriticalNesting );
 			uxCriticalNesting = prvGetTaskCriticalNesting( xTaskToResume );
-			/* Switch tasks. */
+			/* Switch tasks.
+			 * This order could avoid suspend task's itself
+			 */
 			prvResumeThread( xTaskToResume );
 			prvSuspendThread( xTaskToSuspend );
 		}
@@ -473,10 +475,13 @@ pthread_t xTaskToResume;
 				/* Remember and switch the critical nesting. */
 				prvSetTaskCriticalNesting( xTaskToSuspend, uxCriticalNesting );
 				uxCriticalNesting = prvGetTaskCriticalNesting( xTaskToResume );
-				/* Resume next task. */
-				prvResumeThread( xTaskToResume );
+				/* Switch tasks in inturrupt.
+				 * This order could avoid task running in ISR
+				 */
 				/* Suspend the current task. */
 				prvSuspendThread( xTaskToSuspend );
+				/* Resume next task. */
+				prvResumeThread( xTaskToResume );
 			}
 			else
 			{
@@ -594,6 +599,11 @@ sigset_t xSignals;
 		printf( "SSH: Sw %d\n", sig );
 	}
 
+	/* check __get_IPSR to avoid the thread into ISR */
+	while(v_ipsr){
+		portNOP();
+	}
+
 	xPortInterruptsSet(mask);
 
 	/* Will resume here when the SIG_RESUME signal is received. */
@@ -607,7 +617,6 @@ sigset_t xSignals;
 		vPortDisableInterrupts();
 	}
 	xPortInterruptsClean(mask);
-
 	/* Resumed ... */
 }
 /*-----------------------------------------------------------*/
