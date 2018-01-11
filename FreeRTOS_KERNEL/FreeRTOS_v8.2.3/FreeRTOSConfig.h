@@ -101,7 +101,7 @@
 //  <o>Timer task stack depth [words] <0-65535>
 //  <i> Stack for timer task in words.
 //  <i> Default: 80
-#define configTIMER_TASK_STACK_DEPTH            80
+//#define configTIMER_TASK_STACK_DEPTH            80
 
 //  <o>Timer task priority <0-56>
 //  <i> Timer task priority.
@@ -133,13 +133,13 @@
 //  <i> Enable or disable stack overflow checking.
 //  <i> Callback function vApplicationStackOverflowHook implementation is required when stack checking is enabled.
 //  <i> Default: 0
-#define configCHECK_FOR_STACK_OVERFLOW          2
+//#define configCHECK_FOR_STACK_OVERFLOW          2
 
 //  <q>Use idle hook
 //  <i> Enable callback function call on each idle task iteration.
 //  <i> Callback function vApplicationIdleHook implementation is required when idle hook is enabled.
 //  <i> Default: 0
-#define configUSE_IDLE_HOOK                     0
+//#define configUSE_IDLE_HOOK                     0
 
 //  <q>Use tick hook
 //  <i> Enable callback function call during each tick interrupt.
@@ -181,8 +181,8 @@
 #define configUSE_IDLE_HOOK				1
 #define configUSE_TICK_HOOK				0
 #define configTICK_RATE_HZ				( 1000 ) /* In this non-real time simulated environment the tick frequency has to be at least a multiple of the Win32 tick frequency, and therefore very slow. */
-#define configMINIMAL_STACK_SIZE		( ( unsigned short ) 60 ) /* In this simulated case, the stack only has to hold one small structure as the real stack is part of the Win32 thread. */
-#define configTOTAL_HEAP_SIZE			( ( size_t ) 0 ) /* This parameter has no effect when heap_3.c is included in the project. */
+//#define configMINIMAL_STACK_SIZE		( ( unsigned short ) 60 ) /* In this simulated case, the stack only has to hold one small structure as the real stack is part of the Win32 thread. */
+//#define configTOTAL_HEAP_SIZE			( ( size_t ) 0 ) /* This parameter has no effect when heap_3.c is included in the project. */
 #define configMAX_TASK_NAME_LEN			( 7 )
 #define configUSE_TRACE_FACILITY		1
 #define configUSE_16_BIT_TICKS			0
@@ -198,8 +198,8 @@
 #define configUSE_ALTERNATIVE_API		0
 
 #define configUSE_TIMERS				1
-#define configTIMER_TASK_PRIORITY		2
-#define configTIMER_QUEUE_LENGTH		20
+//#define configTIMER_TASK_PRIORITY		2
+//#define configTIMER_QUEUE_LENGTH		20
 #define configTIMER_TASK_STACK_DEPTH	( configMINIMAL_STACK_SIZE * 2 )
 
 #define configMAX_CO_ROUTINE_PRIORITIES ( 2 )
