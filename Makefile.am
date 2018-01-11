@@ -65,4 +65,5 @@ if APPLICATION
 application_libs += $(top_srcdir)/project/libapp.a
 endif
 
-target_LDADD += $(freertos_os_libs) $(cmsis_interface) $(platform_libs) $(application_libs)
+target_LDADD += $(cmsis_interface) $(platform_libs) $(application_libs)
+target_LDADD += $(freertos_os_libs)
