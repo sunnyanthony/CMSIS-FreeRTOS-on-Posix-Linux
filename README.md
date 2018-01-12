@@ -15,6 +15,8 @@ CFPS(CMSIS-FreeRTOS with Posix simulator)
 2. autotools
 	* please install auto tools by yourself
 	* check `autoconf`, `automake`, `m4`, `perl` and `libtool`
+	* check the i386 asm(/usr/include/asm)
+		* the solution: `ln -s /usr/include/asm-generic /usr/include/asm`
 	* if you are macos user, please using Homebrew to install autotools
 
 3. Create configure file
