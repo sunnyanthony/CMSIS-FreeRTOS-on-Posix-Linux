@@ -87,7 +87,11 @@
                                    ((uint32_t)tskKERNEL_VERSION_MINOR *    10000UL) | \
                                    ((uint32_t)tskKERNEL_VERSION_BUILD *        1UL))
 
+#ifdef tskKERNEL_VERSION_NUMBER
+#define KERNEL_ID				  "FreeRTOS "tskKERNEL_VERSION_NUMBER
+#else
 #define KERNEL_ID                 "FreeRTOS V9.0.0"
+#endif
 
 /* Timer callback information structure definition */
 typedef struct {
@@ -133,7 +137,7 @@ void SysTick_Handler (void) {
 }
 #endif /* SysTick */
 
-#if !(FREERTOS_KERNEL_VERSION > V8)
+#if !(tskKERNEL_VERSION_MAJOR > 8)
 #define pcTaskGetName(_x)     pcTaskGetTaskName(_x)
 #define pcTimerGetName(_x)    pcTimerGetTimerName(_x)
 #define uxSemaphoreGetCount( xSemaphore ) uxQueueMessagesWaiting( ( QueueHandle_t ) ( xSemaphore ) )
@@ -401,7 +405,7 @@ osThreadId_t osThreadNew (osThreadFunc_t func, void *argument, const osThreadAtt
         /* Stack size should be therefore 4 byte aligned in order to avoid division caused side effects */
         stack = attr->stack_size / sizeof(StackType_t);
       }
-#if FREERTOS_KERNEL_VERSION > V8
+#if (tskKERNEL_VERSION_MAJOR > 8)
       if ((attr->cb_mem    != NULL) && (attr->cb_size    >= sizeof(StaticTask_t)) &&
           (attr->stack_mem != NULL) && (attr->stack_size >  0U)) {
         mem = 1;
@@ -421,7 +425,7 @@ osThreadId_t osThreadNew (osThreadFunc_t func, void *argument, const osThreadAtt
 /*
  * FIXME: before 9.0.0version, Freertos didn't have xTaskCreateStatic
  */
-#if FREERTOS_KERNEL_VERSION > V8
+#if (tskKERNEL_VERSION_MAJOR > 8)
     if (mem == 1) {
       hTask = xTaskCreateStatic ((TaskFunction_t)func, name, stack, argument, prio, (StackType_t  *)attr->stack_mem,
                                                                                     (StaticTask_t *)attr->cb_mem);
@@ -480,7 +484,7 @@ osThreadState_t osThreadGetState (osThreadId_t thread_id) {
       case eBlocked:
       case eSuspended: state = osThreadBlocked;    break;
       case eDeleted:   state = osThreadTerminated; break;
-#if FREERTOS_KERNEL_VERSION > V8
+#if (tskKERNEL_VERSION_MAJOR > 8)
       case eInvalid:
 #endif
       default:         state = osThreadError;      break;
@@ -887,7 +891,7 @@ osTimerId_t osTimerNew (osTimerFunc_t func, osTimerType_t type, void *argument, 
           name = attr->name;
         }
 
-#if FREERTOS_KERNEL_VERSION > V8
+#if (tskKERNEL_VERSION_MAJOR > 8)
         if ((attr->cb_mem != NULL) && (attr->cb_size >= sizeof(StaticTimer_t))) {
           mem = 1;
         }
@@ -904,7 +908,7 @@ osTimerId_t osTimerNew (osTimerFunc_t func, osTimerType_t type, void *argument, 
         mem = 0;
       }
 
-#if FREERTOS_KERNEL_VERSION > V8
+#if (tskKERNEL_VERSION_MAJOR > 8)
       if (mem == 1) {
         hTimer = xTimerCreateStatic (name, 1, reload, callb, TimerCallback, (StaticTimer_t *)attr->cb_mem);
       }
@@ -1036,7 +1040,7 @@ osEventFlagsId_t osEventFlagsNew (const osEventFlagsAttr_t *attr) {
     mem = -1;
 
     if (attr != NULL) {
-#if FREERTOS_KERNEL_VERSION > V8
+#if (tskKERNEL_VERSION_MAJOR > 8)
       if ((attr->cb_mem != NULL) && (attr->cb_size >= sizeof(StaticEventGroup_t))) {
         mem = 1;
       }
@@ -1053,7 +1057,7 @@ osEventFlagsId_t osEventFlagsNew (const osEventFlagsAttr_t *attr) {
       mem = 0;
     }
 
-#if FREERTOS_KERNEL_VERSION > V8
+#if (tskKERNEL_VERSION_MAJOR > 8)
     if (mem == 1) {
       hEventGroup = xEventGroupCreateStatic (attr->cb_mem);
     }
@@ -1235,7 +1239,7 @@ osMutexId_t osMutexNew (const osMutexAttr_t *attr) {
       mem = -1;
 
       if (attr != NULL) {
-#if FREERTOS_KERNEL_VERSION > V8
+#if (tskKERNEL_VERSION_MAJOR > 8)
         if ((attr->cb_mem != NULL) && (attr->cb_size >= sizeof(StaticSemaphore_t))) {
           mem = 1;
         }
@@ -1252,7 +1256,7 @@ osMutexId_t osMutexNew (const osMutexAttr_t *attr) {
         mem = 0;
       }
 
-#if FREERTOS_KERNEL_VERSION > V8
+#if (tskKERNEL_VERSION_MAJOR > 8)
       if (mem == 1) {
         if (rmtx != 0U) {
           hMutex = xSemaphoreCreateRecursiveMutexStatic (attr->cb_mem);
@@ -1425,7 +1429,7 @@ osSemaphoreId_t osSemaphoreNew (uint32_t max_count, uint32_t initial_count, cons
     mem = -1;
 
     if (attr != NULL) {
-#if FREERTOS_KERNEL_VERSION > V8
+#if (tskKERNEL_VERSION_MAJOR > 8)
       if ((attr->cb_mem != NULL) && (attr->cb_size >= sizeof(StaticSemaphore_t))) {
         mem = 1;
       }
@@ -1444,7 +1448,7 @@ osSemaphoreId_t osSemaphoreNew (uint32_t max_count, uint32_t initial_count, cons
 
     if (mem != -1) {
       if (max_count == 1U) {
-#if FREERTOS_KERNEL_VERSION > V8
+#if (tskKERNEL_VERSION_MAJOR > 8)
         if (mem == 1) {
           hSemaphore = xSemaphoreCreateBinaryStatic ((StaticSemaphore_t *)attr->cb_mem);
         }
@@ -1463,7 +1467,7 @@ osSemaphoreId_t osSemaphoreNew (uint32_t max_count, uint32_t initial_count, cons
         }
       }
       else {
-#if FREERTOS_KERNEL_VERSION > V8
+#if (tskKERNEL_VERSION_MAJOR > 8)
         if (mem == 1) {
           hSemaphore = xSemaphoreCreateCountingStatic (max_count, initial_count, (StaticSemaphore_t *)attr->cb_mem);
         }
@@ -1613,7 +1617,7 @@ osMessageQueueId_t osMessageQueueNew (uint32_t msg_count, uint32_t msg_size, con
     mem = -1;
 
     if (attr != NULL) {
-#if FREERTOS_KERNEL_VERSION > V8
+#if (tskKERNEL_VERSION_MAJOR > 8)
       if ((attr->cb_mem != NULL) && (attr->cb_size >= sizeof(StaticQueue_t)) &&
           (attr->mq_mem != NULL) && (attr->mq_size >= (msg_count * msg_size))) {
         mem = 1;
@@ -1632,7 +1636,7 @@ osMessageQueueId_t osMessageQueueNew (uint32_t msg_count, uint32_t msg_size, con
       mem = 0;
     }
 
-#if FREERTOS_KERNEL_VERSION > V8
+#if (tskKERNEL_VERSION_MAJOR > 8)
     if (mem == 1) {
       hQueue = xQueueCreateStatic (msg_count, msg_size, attr->mq_mem, attr->cb_mem);
     }
@@ -1743,7 +1747,7 @@ osStatus_t osMessageQueueGet (osMessageQueueId_t mq_id, void *msg_ptr, uint8_t *
   return (stat);
 }
 
-#if FREERTOS_KERNEL_VERSION == V8
+#if (tskKERNEL_VERSION_MAJOR == 8)
 struct __xSTATIC_MINI_LIST_ITEM
 {
 	TickType_t d3;
@@ -1846,7 +1850,7 @@ uint32_t osMessageQueueGetSpace (osMessageQueueId_t mq_id) {
 
   return (space);
 }
-#if FREERTOS_KERNEL_VERSION == V8
+#if (tskKERNEL_VERSION_MAJOR == 8)
 #undef StaticQueue_t
 #endif
 
@@ -1945,7 +1949,7 @@ __WEAK void vApplicationStackOverflowHook (TaskHandle_t xTask, signed char *pcTa
 
 /* External Idle and Timer task static memory allocation functions */
 /* These static allocation objects are used by Kernel version 9.0.0+ */
-#if FREERTOS_KERNEL_VERSION > V8
+#if (tskKERNEL_VERSION_MAJOR > 8)
 extern void vApplicationGetIdleTaskMemory  (StaticTask_t **ppxIdleTaskTCBBuffer,  StackType_t **ppxIdleTaskStackBuffer,  uint32_t *pulIdleTaskStackSize);
 extern void vApplicationGetTimerTaskMemory (StaticTask_t **ppxTimerTaskTCBBuffer, StackType_t **ppxTimerTaskStackBuffer, uint32_t *pulTimerTaskStackSize);
 

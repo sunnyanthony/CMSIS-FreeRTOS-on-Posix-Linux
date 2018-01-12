@@ -453,10 +453,14 @@ pthread_t xTaskToResume;
 
 			xTaskToSuspend = prvGetThreadHandle( xTaskGetCurrentTaskHandle() );
 			/* Tick Increment. */
-#if FREERTOS_KERNEL_VERSION == V5
+#ifndef tskKERNEL_VERSION_MAJOR
 			vTaskIncrementTick();
 #else
+#if tskKERNEL_VERSION_MAJOR >= 8
 			xTaskIncrementTick();
+#else
+			vTaskIncrementTick();
+#endif
 #endif
 
 			/* Select Next Task. */

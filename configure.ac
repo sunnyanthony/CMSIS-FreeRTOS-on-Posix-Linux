@@ -101,11 +101,6 @@ AC_SUBST(KERNEL_DIR)
 AM_CONDITIONAL([KERNEL_V5_4_2],[test x$KERNEL_VERSION = xV5])
 AM_CONDITIONAL([KERNEL_V8_2_3],[test x$KERNEL_VERSION = xV8])
 AM_CONDITIONAL([KERNEL_V10_0_0],[test x$KERNEL_VERSION = xV10])
-# KERNEL_VERSION macro will be collise with in cmsis header file
-AC_DEFINE_UNQUOTED([FREERTOS_KERNEL_VERSION],[$KERNEL_VERSION])
-AC_DEFINE([V5],[5])
-AC_DEFINE([V8],[8])
-AC_DEFINE([V10],[10])
 
 # -------------------- demo selection ---------------- #
 DEMO_DIR=
