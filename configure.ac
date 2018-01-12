@@ -120,6 +120,12 @@ PROJECT_DIR+=$KERNEL
 AC_SUBST(PROJECT_DIR)
 AC_CONFIG_LINKS([project/main.c:project/$PROJECT_DIR/main.c])
 
+
+# -------------------- have to use m32 to compile for CMSIS ------- #
+CFLAGS+=" -m32 "
+#CPPFLAGS+=" -m32 "
+LDFLAGS+="-m32"
+
 # ----------------------- makefile generated ---------------------- #
 AC_CONFIG_FILES([Makefile
                  project/Makefile
