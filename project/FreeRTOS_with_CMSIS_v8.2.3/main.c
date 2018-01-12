@@ -24,12 +24,16 @@
 
 #include "cmsis_os2.h"
 
+#define QUEUE_NUM 1
 
 osThreadId_t tid_phaseA;                /* Thread id of thread: phase_a      */
 osThreadId_t tid_phaseB;                /* Thread id of thread: phase_b      */
 osThreadId_t tid_phaseC;                /* Thread id of thread: phase_c      */
 osThreadId_t tid_phaseD;                /* Thread id of thread: phase_d      */
 osThreadId_t tid_clock;                 /* Thread id of thread: clock        */
+osThreadId_t tid_phaseQ;                /* Thread id of thread: phase_q      */
+
+osMessageQueueId_t qid_phase[QUEUE_NUM];			/* Queue is of Threads */
 
 struct phases_t {
   int_fast8_t phaseA;
@@ -38,7 +42,27 @@ struct phases_t {
   int_fast8_t phaseD;
 } g_phases;
 
+struct qmsg{
+	uint32_t size;	
+	unsigned char data[32];
+};
 
+struct qmsg amsg= {
+	.size = 10,
+	.data = "Wake up A"
+};
+struct qmsg bmsg = {
+	.size = 10,
+	.data = "Wake up B"
+};
+struct qmsg cmsg = {
+	.size = 10,
+	.data = "Wake up C"
+};
+struct qmsg dmsg = {
+	.size = 10,
+	.data = "Wake up D"
+};
 /*----------------------------------------------------------------------------
  *      Function 'signal_func' called from multiple threads
  *---------------------------------------------------------------------------*/
@@ -55,9 +79,10 @@ void signal_func (osThreadId_t tid)  {
  *      Thread 1 'phaseA': Phase A output
  *---------------------------------------------------------------------------*/
 void phaseA (void *argument) {
+	uint32_t temp = (uint32_t)&amsg;
   for (;;) {
-	printf("A\n");
     osThreadFlagsWait(0x0001, osFlagsWaitAny ,osWaitForever);   /* wait for an event flag 0x0001 */
+	osMessageQueuePut(qid_phase[0],&temp,0,0);
     g_phases.phaseA = 1;
     signal_func(tid_phaseB);                                    /* call common signal function   */
     g_phases.phaseA = 0;
@@ -68,9 +93,10 @@ void phaseA (void *argument) {
  *      Thread 2 'phaseB': Phase B output
  *---------------------------------------------------------------------------*/
 void phaseB (void *argument) {
+	uint32_t temp = (uint32_t)&bmsg;
   for (;;) {
-	printf("B\n");
     osThreadFlagsWait(0x0001, osFlagsWaitAny, osWaitForever);   /* wait for an event flag 0x0001 */
+	osMessageQueuePut(qid_phase[0],&temp,0,0);
     g_phases.phaseB = 1;
     signal_func(tid_phaseC);                                    /* call common signal function   */
     g_phases.phaseB = 0;
@@ -81,9 +107,10 @@ void phaseB (void *argument) {
  *      Thread 3 'phaseC': Phase C output
  *---------------------------------------------------------------------------*/
 void phaseC (void *argument) {
+	uint32_t temp = (uint32_t)&cmsg;
   for (;;) {
-	printf("C\n");
     osThreadFlagsWait(0x0001, osFlagsWaitAny, osWaitForever);   /* wait for an event flag 0x0001 */
+	osMessageQueuePut(qid_phase[0],&temp,0,0);
     g_phases.phaseC = 1;
     signal_func(tid_phaseD);                                    /* call common signal function   */
     g_phases.phaseC = 0;
@@ -94,9 +121,10 @@ void phaseC (void *argument) {
  *      Thread 4 'phaseD': Phase D output
  *---------------------------------------------------------------------------*/
 void phaseD (void *argument) {
+	uint32_t temp = (uint32_t)&dmsg;
   for (;;) {
-	printf("D\n");
     osThreadFlagsWait(0x0001, osFlagsWaitAny, osWaitForever);   /* wait for an event flag 0x0001 */
+	osMessageQueuePut(qid_phase[0],&temp,0,0);
     g_phases.phaseD = 1;
     signal_func(tid_phaseA);                                    /* call common signal function   */
     g_phases.phaseD = 0;
@@ -115,6 +143,21 @@ void clock (void *argument) {
 }
 
 /*----------------------------------------------------------------------------
+ *      Thread 5 'Q': Queue
+ *---------------------------------------------------------------------------*/
+
+void phaseQ (void* unuse){
+	struct qmsg *msg;
+	uint32_t temp = 0;
+	for(;;){
+		osMessageQueueGet(qid_phase[0], &temp, NULL, osWaitForever);
+		msg = temp;
+		write(1,msg->data,msg->size);
+		write(1,"\n",1);
+	}
+}
+
+/*----------------------------------------------------------------------------
  *      Main: Initialize and start the application
  *---------------------------------------------------------------------------*/
 void app_main (void *argument) {
@@ -126,6 +169,11 @@ void app_main (void *argument) {
   tid_clock  = osThreadNew(clock,  NULL, NULL);
 
   osThreadFlagsSet(tid_phaseA, 0x0001); /* set signal to phaseA thread   */
+
+  osThreadAttr_t att={0};
+  att.name = "Queue";
+  att.priority = osPriorityAboveNormal;
+  tid_phaseQ = osThreadNew(phaseQ, NULL, &att);
 
   osDelay(osWaitForever);
   while(1);
@@ -145,6 +193,11 @@ int main (void) {
   // Initialize and start Event Recorder
   EventRecorderInitialize(EventRecordAll, 1U);
 #endif
+
+  for(int i=0;i<QUEUE_NUM;i++){
+		 qid_phase[i] = osMessageQueueNew(8,sizeof(void *),NULL);
+  }
+
   osKernelInitialize();                 // Initialize CMSIS-RTOS
   osThreadNew(app_main, NULL, NULL);    // Create application main thread
   if (osKernelGetState() == osKernelReady) {
